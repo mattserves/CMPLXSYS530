@@ -12,7 +12,7 @@ Matthew Nelson
 ### Goal 
 *****
  
-The goal of this model is to observe the interactions between individual jobseekers and companies looking for talent. The scope of the model will focus on college seniors in engineering and companies looking to fill entry level engineering roles.
+The goal of this model is to observe the interactions between individual jobseekers and companies looking for talent. The scope of the model will focus on college seniors majoring in computer science/computer engineering and companies looking to fill entry level engineering roles.
 
 &nbsp;  
 ### Justification
@@ -64,7 +64,40 @@ _Description of the environment in your model. Things to specify *if they apply*
 
 ### 2) Agents
  
- _Description of the "agents" in the system. Things to specify *if they apply*:_
+The first type of agents are the students. Students will have the following attributes:
+1. Student ID Number
+2. University Rank
+4. GPA
+5. Level of previous experience
+
+Students will have a set of weighted static preferences stored in a list, generated randomly upon creation of agent. These preferences include:
+1. Preferred region
+2. Preferred salary
+3. Preferred bonus
+4. Preferred industry
+
+In addition, students will have a ranked order of desired companies based on who they interact with. This order will be based on how well the company meets their preferences
+
+ The second type of agents are the companies. Each company has the following attributes
+ 1. Company ID Number
+ 2. Industry
+ 3. Region
+ 
+ Companies will have a set of the following weighted static preferences used to rank candidates:
+ 1. Desired major
+ 2. Desired GPA
+ 3. Desired level of experience
+ 
+ In addition, companies will have a recruiting strategy based on the following criteria:
+ 1. Minimum university rank
+ 2. Salary offered
+ 3. Bonus offered
+ 4. Minimum previous experience accepted
+ 
+ 
+ 
+ 
+ 
  
 * _List of agent-owned variables (e.g. age, heading, ID, etc.)_
 * _List of agent-owned methods/procedures (e.g. move, consume, reproduce, die, etc.)_
