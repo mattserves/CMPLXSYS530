@@ -82,28 +82,36 @@ Students will have a set of equally weighted static preferences stored in a list
 In addition, students will have a ranked order of desired companies based on who they interact with. This order will be based on how well the company meets their preferences.
 
 The student agent procedures are as follows (in pseudocode):
-def create_agent(number_agents):
+
+```python
+def create_agent(number_agents, number_companies):
     """This procedure creates the number of specified agents, and creates the matrixes for attributes, preferences and ranking"""
     for agent in number_agents:
-        student_gpa = rand_gpa()                 # calls random GPA function
-        students_gpas.append(student_gpa)        # adds agent's GPA to list of all GPAs
+        s_id = agent
+        students_ids.append(s_id)
         
-        student_urank = university_rank()        # calls university ranking assignment function
-        students_uranks.append(student_urank)    # adds agent's university rank to the list of rankings
+        s_gpa = rand_gpa()                 # calls random GPA function
+        students_gpas.append(s_gpa)        # adds agent's GPA to list of all GPAs
         
-        student_exp = level_experience()         # calls level of experience function
-        students_exp.append(student_gpa)         # adds agent's level of experience to list
+        s_urank = university_rank()        # calls university ranking assignment function
+        students_uranks.append(s_urank)    # adds agent's university rank to the list of rankings
         
-        salary_pref = salary_preference()
-        students_salary.append(salary_pref)
+        s_exp = level_experience()         # calls level of experience function
+        students_exp.append(s_gpa)         # adds agent's level of experience to list
         
-        bonus_pref = bonus_preference()
-        students_bonus.append(bonus_pref)
+        salary_pref = salary_preference()        # calls salary preference function
+        students_salary.append(salary_pref)      # adds agent's salary preference to list
         
-        region_pref = region_preference()
-        students_region.append(region_pref)
+        bonus_pref = bonus_preference()          # calls bonus preference function
+        students_bonus.append(bonus_pref)        # adds agent's bonus preference to list
         
+        region_pref = region_preference()        # calls region preference function
+        students_region.append(region_pref)      # adds agent's region preference to list
         
+     s_dict = {"Student ID": students_ids, "GPA": students_gpa, "Level Experience": students_gpas, "Salary Preference": students_salary, "Bonus Preferred Amount": students_bonus, "Regional Preference": students_region}
+     s_matrix = pd.DataFrame(s_dict)
+    
+     
      
     
     
@@ -146,7 +154,7 @@ def industry_preference()
     ipref = random.randint(1, 7)
     return ipref
 
-
+```
 The second type of agents are the companies. Each company has the following attributes
 * Company ID Number
 * Industry
