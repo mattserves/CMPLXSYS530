@@ -17,7 +17,7 @@ The goal of this model is to observe the interactions between individual jobseek
 &nbsp;  
 ### Justification
 ****
-During the recruiting process, both job-seekers and companies are individual actors acting on their own self-interest. Not every student and every company ends up interacting with each other. Using ABM makes it easier to add in additiona complexity in the future.
+During the recruiting process, both job-seekers and companies are individual actors acting on their own self-interest. Not every student and every company ends up interacting with each other. Using ABM makes it easier to add in additional complexity in the future.
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
@@ -68,34 +68,100 @@ _Description of the environment in your model. Things to specify *if they apply*
 ### 2) Agents
  
 The first type of agents are the students. Students will have the following attributes:
-1. Student ID Number
-2. University Rank
-4. GPA
-5. Level of previous experience
+* Student ID Number
+* University Rank
+* GPA
+* Level of previous experience
 
-Students will have a set of weighted static preferences stored in a list, generated randomly upon creation of agent. These preferences include:
-1. Preferred region
-2. Preferred salary
-3. Preferred bonus
-4. Preferred industry
+Students will have a set of equally weighted static preferences stored in a list, generated randomly upon creation of agent. Future complexity will add weights to the preferences. These preferences include:
+* Preferred region
+* Preferred salary
+* Preferred bonus
+* Preferred industry
 
-In addition, students will have a ranked order of desired companies based on who they interact with. This order will be based on how well the company meets their preferences
+In addition, students will have a ranked order of desired companies based on who they interact with. This order will be based on how well the company meets their preferences.
 
- The second type of agents are the companies. Each company has the following attributes
- 1. Company ID Number
- 2. Industry
- 3. Region
+The student agent procedures are as follows (in pseudocode):
+def create_agent(number_agents):
+    """This procedure creates the number of specified agents, and creates the matrixes for attributes, preferences and ranking"""
+    for agent in number_agents:
+        student_gpa = rand_gpa()                 # calls random GPA function
+        students_gpas.append(student_gpa)        # adds agent's GPA to list of all GPAs
+        
+        student_urank = university_rank()        # calls university ranking assignment function
+        students_uranks.append(student_urank)    # adds agent's university rank to the list of rankings
+        
+        student_exp = level_experience()         # calls level of experience function
+        students_exp.append(student_gpa)         # adds agent's level of experience to list
+        
+        salary_pref = salary_preference()
+        students_salary.append(salary_pref)
+        
+        bonus_pref = bonus_preference()
+        students_bonus.append(bonus_pref)
+        
+        region_pref = region_preference()
+        students_region.append(region_pref)
+        
+        
+     
+    
+    
+def rand_gpa():
+    """This procedure is called by student agents, and returns a random gpa based on an underlying distribution"""
+    gpa = numpy.random.choice(numpy.arange(1,17), p = [0.003, 0.001, 0.002, 0.002, 0.004, 0.005, 0.009, 0.016, 0.046, 0.066, 0.108,     0.137, 0.179, 0.152, 0.125, 0.090, 0.057])
+    return gpa
+    
+def university_rank()
+    """This procedure assigns the student to a university, which has a ranking value based on fictional US News and World Report rankings"""
+    """The procedure will assume the students are normally distributed for now; future complexity will reflect real-life enrollment levels"""
+    urank = random.randint(0, 351)
+    return urank
+    
+def level_experience()
+    """This procedure assigns the student a level of experience from 0-4, based on the number of relevant years of research/internship experience"""
+    exp = random.randint(0, 4)
+    return exp
+    
+def salary_preference()
+    """This procedure assigns the student a salary preference from $70,000 to $120,000"""
+    spref = random.randint(70000, 120000)
+    return spref
+    
+def bonus_preference()
+    """This procedure assigns the student a bonus preference from $0 to $50,000"""
+    bpref = random.randint(0, 50000)
+    return bpref
+
+def region_preference()
+    """This procedure assigns the student a regional preference from 1-6"""
+    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast"""
+    rpref = random.randint(1, 5)
+    return rpref
+
+def industry_preference()
+    """This procedure assigns the student an industry preference from 1 to 7"""
+    """1 - Software, 2 - Hardware, 3 - Automotive, 4 - Consumer Goods, 5 - Consulting, 6 - Manufacturing, 7 - Telecomm"""
+    """Future complexity will create distribution based on student surveys"""
+    ipref = random.randint(1, 7)
+    return ipref
+
+
+The second type of agents are the companies. Each company has the following attributes
+* Company ID Number
+* Industry
+* Region
  
- Companies will have a set of the following weighted static preferences used to rank candidates:
- 1. Desired major
- 2. Desired GPA
- 3. Desired level of experience
+Companies will have a set of the following weighted static preferences used to rank candidates:
+* Desired major
+* Desired GPA
+* Desired level of experience
  
- In addition, companies will have a recruiting strategy based on the following criteria:
- 1. Minimum university rank
- 2. Salary offered
- 3. Bonus offered
- 4. Minimum previous experience accepted
+In addition, companies will have a recruiting strategy based on the following criteria:
+* Minimum university rank
+* Salary offered
+* Bonus offered
+* Minimum previous experience accepted
  
  
  
@@ -143,7 +209,10 @@ Their GPA will be randomly generated from a distribution which matches the distr
 They will also be randomly assigned to a university.
 They will be assigned a random level of previous experience, ranging from 0-4, representing years or reasearch/internship/co-op experience
 
+The initialization code is as follows
 
+def init():
+    global time, number_agents, number_companies, envir, number_openings_start, number_openings_end, number_offers, number_interact
 
 
 _Describe and list any global parameters you will be applying in your model._
