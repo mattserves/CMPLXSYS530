@@ -84,7 +84,7 @@ In addition, students will have a ranked order of desired companies based on who
 The student agent procedures are as follows (in pseudocode):
 
 ```python
-def create_agent(number_agents, number_companies):
+def create_students(number_students):
     """This procedure creates the number of specified agents, and creates the matrixes for attributes, preferences and ranking"""
     for agent in number_agents:
         s_id = agent
@@ -110,11 +110,8 @@ def create_agent(number_agents, number_companies):
         
      s_dict = {"Student ID": students_ids, "GPA": students_gpa, "Level Experience": students_gpas, "Salary Preference": students_salary, "Bonus Preferred Amount": students_bonus, "Regional Preference": students_region}
      s_matrix = pd.DataFrame(s_dict)
-    
-     
-     
-    
-    
+
+
 def rand_gpa():
     """This procedure is called by student agents, and returns a random gpa based on an underlying distribution"""
     gpa = numpy.random.choice(numpy.arange(1,17), p = [0.003, 0.001, 0.002, 0.002, 0.004, 0.005, 0.009, 0.016, 0.046, 0.066, 0.108,     0.137, 0.179, 0.152, 0.125, 0.090, 0.057])
@@ -171,21 +168,94 @@ In addition, companies will have a recruiting strategy based on the following cr
 * Bonus offered
 * Minimum previous experience accepted
  
- 
+The company agent procedures are as follows (in pseudocode):
+
+```python 
+def create_companies(number_companies):
+    """This procedure creates the number of specified agents, and creates the matrixes for attributes, preferences and ranking"""
+    for company in number_companies:
+        co_id = company
+        co_ids.append(co_id)
+        
+        co_region = region_location()            # calls region location function
+        co_regions.append(region_pref)           # adds company's region to list
+        
+        co_industry = industry()                 # calls industry function
+        co_industries.append(co_industry)        # adds company's industry to list
+        
+        
+        co_gpa = min_gpa()                       # calls minimum GPA function
+        co_min_gpa.append(co_gpa)                # adds company's minimum GPA to list of all GPAs
+        
+        co_urank = min_rank()                    # calls minimum university ranking assignment function
+        co_min_rank.append(co_urank)             # adds company's university rank to the list of rankings
+        
+        co_exp = min_experience()                # calls minimum level of experience function
+        co_min_exp.append(co_exp)                # adds company's level of experience to list
+        
+        salary_pref = salary_preference()        # calls salary preference function
+        students_salary.append(salary_pref)      # adds agent's salary preference to list
+        
+        bonus_pref = bonus_preference()          # calls bonus preference function
+        students_bonus.append(bonus_pref)        # adds agent's bonus preference to list
+        
+        
+     co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries}
+     s_matrix = pd.DataFrame(s_dict)
+
+def region_location()
+    """This procedure assigns each company to a randomly selected region"""
+    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast""
+    rloc = numpy.random.choice(numpy.arange(1,5), p = [0.40, 0.25, 0.10, 0.10, 0.15])
+    return rloc
+    
+def industry()
+    """This procedure assigns the company to an industry"""
+    """1 - Software, 2 - Hardware, 3 - Automotive, 4 - Consumer Goods, 5 - Consulting, 6 - Manufacturing, 7 - Telecomm"""
+    """Future complexity will create distribution based on job openings"""
+    ind = random.randint(1, 7)
+    return ind
+
+def min_gpa():
+    """This procedure is called by student agents, and returns a random gpa based on an underlying distribution"""
+    wgpa = numpy.random.choice(numpy.arange(1,5), p = [0.20, 0.20, 0.20, 0.20, 0.20)
+    """1 - No requirement, 2 - 2.0 GPA, 3 - 2.5 GPA, 4 - 3.0 GPA, 5 - 3.5
+    return wgpa
+    
+def university_rank()
+    """This procedure assigns the student to a university, which has a ranking value based on fictional US News and World Report rankings"""
+    """The procedure will assume the students are normally distributed for now; future complexity will reflect real-life enrollment levels"""
+    urank = random.randint(0, 351)
+    return urank
+    
+def level_experience()
+    """This procedure assigns the student a level of experience from 0-4, based on the number of relevant years of research/internship experience"""
+    exp = random.randint(0, 4)
+    return exp
+    
+def salary_preference()
+    """This procedure assigns the student a salary preference from $70,000 to $120,000"""
+    spref = random.randint(70000, 120000)
+    return spref
+    
+def bonus_preference()
+    """This procedure assigns the student a bonus preference from $0 to $50,000"""
+    bpref = random.randint(0, 50000)
+    return bpref
+
+
+
+
+
+```
+
+
  
  
  
  
 * _List of agent-owned variables (e.g. age, heading, ID, etc.)_
 * _List of agent-owned methods/procedures (e.g. move, consume, reproduce, die, etc.)_
-
-
-```python
-# Include first pass of the code you are thinking of using to construct your agents
-# This may be a set of "turtle-own" variables and a command in the "setup" procedure, a list, an array, or Class constructor
-# Feel free to include any agent methods/procedures you have so far. Filling in with pseudocode is ok! 
-# NOTE: If using Netlogo, remove "python" from the markdown at the top of this section to get a generic code block
-```
 
 &nbsp; 
 
@@ -220,7 +290,7 @@ They will be assigned a random level of previous experience, ranging from 0-4, r
 The initialization code is as follows
 
 def init():
-    global time, number_agents, number_companies, envir, number_openings_start, number_openings_end, number_offers, number_interact
+    global time, number_students, number_companies, envir, number_openings_start, number_openings_end, number_offers, number_interact
 
 
 _Describe and list any global parameters you will be applying in your model._
