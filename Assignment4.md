@@ -17,7 +17,7 @@ The goal of this model is to observe the interactions between individual jobseek
 &nbsp;  
 ### Justification
 ****
-During the recruiting process, both job-seekers and companies are individual actors acting on their own self-interest. Ther
+During the recruiting process, both job-seekers and companies are individual actors acting on their own self-interest. Not every student and every company ends up interacting with each other. Using ABM makes it easier to add in additiona complexity in the future.
 
 &nbsp; 
 ### Main Micro-level Processes and Macro-level Dynamics of Interest
@@ -45,6 +45,9 @@ The key macro-level dynamics of interest are as follows
 ****
 &nbsp; 
 ### 1) Environment
+The environment in this model is the recruiting landscape. The environment will keep track of interactions and the resultant outcomes. Here are the environmental variables being tracked
+
+
 _Description of the environment in your model. Things to specify *if they apply*:_
 
 * _Boundary conditions (e.g. wrapping, infinite, etc.)_
@@ -128,6 +131,20 @@ _What does an agent, cell, etc. do on a given turn? Provide a step-by-step descr
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
+The global parameters being tracked are as follows:
+1. Number of student job-seekers
+2. Number of companies
+3. Number of total job openings
+4. Number of student-company interactions
+
+The model will be initialized by creating 24,500 students (the number of comp sci/computer engineering graduates in 2016) and a defined number of companies.
+Each student will be assigned an attribute matrix and a preference matrix, as well as an empty list for ranking companies.
+Their GPA will be randomly generated from a distribution which matches the distribution of undergraduate engineering students at the Texas Agricultural and Mechanical University.
+They will also be randomly assigned to a university.
+They will be assigned a random level of previous experience, ranging from 0-4, representing years or reasearch/internship/co-op experience
+
+
+
 
 _Describe and list any global parameters you will be applying in your model._
 
@@ -138,11 +155,18 @@ _Provide a high level, step-by-step description of your schedule during each "ti
 &nbsp; 
 
 ### 5) Assessment and Outcome Measures
+The quantitative measures being tracked are as follows:
+1. Number of job offers
+2. Number of accepted job offers
+3. Number of declined job offers
+4. Number of unfilled job openings
+5. Number of students without jobs
 
 _What quantitative metrics and/or qualitative features will you use to assess your model outcomes?_
 
 &nbsp; 
 
 ### 6) Parameter Sweep
-
+Some of the paratemers I am interested in sweeping is:
+* Number of companies - between 10,000 and 100,000
 _What parameters are you most interested in sweeping through? What value ranges do you expect to look at for your analysis?_
