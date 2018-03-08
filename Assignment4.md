@@ -124,28 +124,28 @@ def university_rank()
     urank = random.randint(0, 351)
     return urank
     
-def level_experience()
+def level_experience():
     """This procedure assigns the student a level of experience from 0-4, based on the number of relevant years of research/internship experience"""
     exp = random.randint(0, 4)
     return exp
     
-def salary_preference()
+def salary_preference():
     """This procedure assigns the student a salary preference from $70,000 to $120,000"""
     spref = random.randint(70000, 120000)
     return spref
     
-def bonus_preference()
+def bonus_preference():
     """This procedure assigns the student a bonus preference from $0 to $50,000"""
     bpref = random.randint(0, 50000)
     return bpref
 
-def region_preference()
+def region_preference():
     """This procedure assigns the student a regional preference from 1-6"""
     """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast"""
     rpref = random.randint(1, 5)
     return rpref
 
-def industry_preference()
+def industry_preference():
     """This procedure assigns the student an industry preference from 1 to 7"""
     """1 - Software, 2 - Hardware, 3 - Automotive, 4 - Consumer Goods, 5 - Consulting, 6 - Manufacturing, 7 - Telecomm"""
     """Future complexity will create distribution based on student surveys"""
@@ -202,20 +202,20 @@ def create_companies(number_companies):
      co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries, "Desired GPA": co_dgpa, "Minimum GPA": min_gpa, "Maximum Salary": max_salary, "Maximum Bonus": max_bonus}
      c_matrix = pd.DataFrame(co_dict)
 
-def industry()
+def industry():
     """This procedure assigns the company to an industry"""
     """1 - Software, 2 - Hardware, 3 - Automotive, 4 - Consumer Goods, 5 - Consulting, 6 - Manufacturing, 7 - Telecomm"""
     """Future complexity will create distribution based on job openings"""
     ind = random.randint(1, 7)
     return ind
 
-def region_location()
+def region_location():
     """This procedure assigns each company to a randomly selected region"""
     """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast""
     rloc = numpy.random.choice(numpy.arange(1,5), p = [0.40, 0.25, 0.10, 0.10, 0.15])
     return rloc
     
-def initial_openings()
+def initial_openings():
     """This procedure assigns each company with a randomly selected number of job openings, from 5 to 100"""
     open = random.randint(5, 100)
     return open
@@ -226,22 +226,22 @@ def min_gpa():
     """1 - No requirement, 2 - 2.0 GPA, 3 - 2.5 GPA, 4 - 3.0 GPA, 5 - 3.5
     return wgpa
     
-def min_rank()
+def min_rank():
      """This procedure assigns each company a minimum university ranking requirement"""
     mrank = random.randint(0, 351)
     return mrank
     
-def min_experience()
+def min_experience():
     """This procedure assigns each company a minimum prior experience requirement"""
     mexp = random.randint(0, 4)
     return mexp
     
-def maximum_salary()
+def maximum_salary():
     """This procedure assigns each company a maximum salary offered from $70,000 to $120,000"""
     maxsal = random.randint(70000, 120000)
     return maxsaal
     
-def maximum_bonus()
+def maximum_bonus():
     """This procedure assigns each company a maximum salary offered from $0 to $50,000"""
     maxbonus = random.randint(0, 50000)
     return maxbonus
