@@ -72,6 +72,7 @@ The first type of agents are the students. Students will have the following attr
 * University Rank
 * GPA
 * Level of previous experience
+* Accepted offer
 
 Students will have a set of equally weighted static preferences stored in a list, generated randomly upon creation of agent. Future complexity will add weights to the preferences. These preferences include:
 * Preferred region
@@ -86,7 +87,7 @@ The student agent procedures are as follows (in pseudocode):
 ```python
 def create_students(number_students):
     """This procedure creates the number of specified agents, and creates the matrixes for attributes, preferences and ranking"""
-    for agent in number_agents:
+    for agent in number_students:
         s_id = agent
         students_ids.append(s_id)
         
@@ -157,12 +158,8 @@ The second type of agents are the companies. Each company has the following attr
 * Industry
 * Region
  
-Companies will have a set of the following weighted static preferences used to rank candidates:
-* Desired major
-* Desired GPA
-* Desired level of experience
- 
 In addition, companies will have a recruiting strategy based on the following criteria:
+* Minimum GPA
 * Minimum university rank
 * Salary offered
 * Bonus offered
@@ -177,38 +174,34 @@ def create_companies(number_companies):
         co_id = company
         co_ids.append(co_id)
         
-        co_region = region_location()            # calls region location function
-        co_regions.append(region_pref)           # adds company's region to list
-        
         co_industry = industry()                 # calls industry function
         co_industries.append(co_industry)        # adds company's industry to list
         
+        co_region = region_location()            # calls region location function
+        co_regions.append(region_pref)           # adds company's region to list
         
-        co_gpa = min_gpa()                       # calls minimum GPA function
-        co_min_gpa.append(co_gpa)                # adds company's minimum GPA to list of all GPAs
-        
+        co_open = initial_openings()             # calls number of initial job openings function
+        co__init_openings.append(co_offers)      # adds company's number to list
+       
+        co_gpa = minimum_gpa()                   # calls minimum gpa function
+        min_gpa.append(co_gpa)                   # adds company's minimum gpa to list
+       
         co_urank = min_rank()                    # calls minimum university ranking assignment function
-        co_min_rank.append(co_urank)             # adds company's university rank to the list of rankings
+        min_rank.append(co_urank)                # adds company's university rank to the list of rankings
         
         co_exp = min_experience()                # calls minimum level of experience function
         co_min_exp.append(co_exp)                # adds company's level of experience to list
         
-        salary_pref = salary_preference()        # calls salary preference function
-        students_salary.append(salary_pref)      # adds agent's salary preference to list
+        co_salary = maximum_salary()             # calls maximum salary function
+        max_salary.append(co_salary)             # adds company's max salary preference to list
         
-        bonus_pref = bonus_preference()          # calls bonus preference function
-        students_bonus.append(bonus_pref)        # adds agent's bonus preference to list
+        co_bonus = maximum_bonus()               # calls maximum bonus function
+        max_bonus.append(co_bonus)               # adds company's max bonus to list
         
         
-     co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries}
-     s_matrix = pd.DataFrame(s_dict)
+     co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries, "Desired GPA": co_dgpa, "Minimum GPA": min_gpa, "Maximum Salary": max_salary, "Maximum Bonus": max_bonus}
+     c_matrix = pd.DataFrame(co_dict)
 
-def region_location()
-    """This procedure assigns each company to a randomly selected region"""
-    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast""
-    rloc = numpy.random.choice(numpy.arange(1,5), p = [0.40, 0.25, 0.10, 0.10, 0.15])
-    return rloc
-    
 def industry()
     """This procedure assigns the company to an industry"""
     """1 - Software, 2 - Hardware, 3 - Automotive, 4 - Consumer Goods, 5 - Consulting, 6 - Manufacturing, 7 - Telecomm"""
@@ -216,46 +209,43 @@ def industry()
     ind = random.randint(1, 7)
     return ind
 
+def region_location()
+    """This procedure assigns each company to a randomly selected region"""
+    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast""
+    rloc = numpy.random.choice(numpy.arange(1,5), p = [0.40, 0.25, 0.10, 0.10, 0.15])
+    return rloc
+    
+def initial_openings()
+    """This procedure assigns each company with a randomly selected number of job openings, from 5 to 100"""
+    open = random.randint(5, 100)
+    return open
+    
 def min_gpa():
-    """This procedure is called by student agents, and returns a random gpa based on an underlying distribution"""
+    """This procedure assigns each company a minimum gpa requirement"""
     wgpa = numpy.random.choice(numpy.arange(1,5), p = [0.20, 0.20, 0.20, 0.20, 0.20)
     """1 - No requirement, 2 - 2.0 GPA, 3 - 2.5 GPA, 4 - 3.0 GPA, 5 - 3.5
     return wgpa
     
-def university_rank()
-    """This procedure assigns the student to a university, which has a ranking value based on fictional US News and World Report rankings"""
-    """The procedure will assume the students are normally distributed for now; future complexity will reflect real-life enrollment levels"""
-    urank = random.randint(0, 351)
-    return urank
+def min_rank()
+     """This procedure assigns each company a minimum university ranking requirement"""
+    mrank = random.randint(0, 351)
+    return mrank
     
-def level_experience()
-    """This procedure assigns the student a level of experience from 0-4, based on the number of relevant years of research/internship experience"""
-    exp = random.randint(0, 4)
-    return exp
+def min_experience()
+    """This procedure assigns each company a minimum prior experience requirement"""
+    mexp = random.randint(0, 4)
+    return mexp
     
-def salary_preference()
-    """This procedure assigns the student a salary preference from $70,000 to $120,000"""
-    spref = random.randint(70000, 120000)
-    return spref
+def maximum_salary()
+    """This procedure assigns each company a maximum salary offered from $70,000 to $120,000"""
+    maxsal = random.randint(70000, 120000)
+    return maxsaal
     
-def bonus_preference()
-    """This procedure assigns the student a bonus preference from $0 to $50,000"""
-    bpref = random.randint(0, 50000)
-    return bpref
-
-
-
-
-
+def maximum_bonus()
+    """This procedure assigns each company a maximum salary offered from $0 to $50,000"""
+    maxbonus = random.randint(0, 50000)
+    return maxbonus
 ```
-
-
- 
- 
- 
- 
-* _List of agent-owned variables (e.g. age, heading, ID, etc.)_
-* _List of agent-owned methods/procedures (e.g. move, consume, reproduce, die, etc.)_
 
 &nbsp; 
 
@@ -263,36 +253,48 @@ def bonus_preference()
  
 **_Interaction Topology_**
 
-_Description of the topology of who interacts with whom in the system. Perfectly mixed? Spatial proximity? Along a network? CA neighborhood?_
+The interaction topology can be thought of as a tri-partite network. Students and companies may interact with each other, but only if the company selects the university to visit. Students will not interact with other students, and companies will not interact with other companies.
  
 **_Action Sequence_**
+Cycle 1
+1. Step 1 - Companies create a list of universities to visit. This decision is based on recruiting strategy
+2. Step 2 - Students create a ranking of companies from those who are planning to visit their university
+3. Step 3 - An interaction probability is calculated based on student interest. The probability is set to zero for students who do not meet the company minimum requirements.
+4. Step 4 - Students and companies interact. The companies rank the students they interact with based on weighted preferences (GPA and previous experience)
+5. Step 5 - Companies offer jobs to students based on available openings
+6. Step 6 - Students evaluate job offers and rank them based on preferences
+7. Step 7 - Students accept/decline job offers and inform companies of decision
 
-_What does an agent, cell, etc. do on a given turn? Provide a step-by-step description of what happens on a given turn for each part of your model_
-
-1. Step 1
-2. Step 2
-3. Etc...
+Cycle 2
+1. Step 1 - Companies create a list of universities to visit. This decision is based on recruiting strategy
+2. Step 2 - Students create a ranking of companies from those who are planning to visit their university
+3. Step 3 - An interaction probability is calculated based on student interest. The probability is set to zero for students who do not meet the company minimum requirements and students who accepted jobs.
+4. Step 4 - Students and companies interact. The companies rank the students they interact with based on weighted preferences (GPA and previous experience)
+5. Step 5 - Companies offer jobs to students based on available openings
+6. Step 6 - Students evaluate job offers and rank them based on preferences
+7. Step 7 - Students accept/decline job offers and inform companies of decision
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
-The global parameters being tracked are as follows:
-1. Number of student job-seekers
-2. Number of companies
-3. Number of total job openings
-4. Number of student-company interactions
 
-The model will be initialized by creating 24,500 students (the number of comp sci/computer engineering graduates in 2016) and a defined number of companies.
-Each student will be assigned an attribute matrix and a preference matrix, as well as an empty list for ranking companies.
-Their GPA will be randomly generated from a distribution which matches the distribution of undergraduate engineering students at the Texas Agricultural and Mechanical University.
-They will also be randomly assigned to a university.
-They will be assigned a random level of previous experience, ranging from 0-4, representing years or reasearch/internship/co-op experience
+
+The model will be initialized by creating 24,500 students (the number of comp sci/computer engineering graduates in 2016) and 1,000 companies. It will create global parameters to track beginning and ending number of job openings, along with number of student-company interactions. A list to track whether students have accepted job offers will be initialized to False
+
 
 The initialization code is as follows
+```python
 
 def init():
-    global time, number_students, number_companies, envir, number_openings_start, number_openings_end, number_offers, number_interact
+    global cycle, time, number_students, number_companies, total_openings_start, number_openings_end, number_offers, number_interact
+    
+    accepted_offer = [False for x in number_students]
+    cycle = 1
+    time = 2
+    number_students = 24,500
+    number_companies = 1000
 
 
+```
 _Describe and list any global parameters you will be applying in your model._
 
 _Describe how your model will be initialized_
