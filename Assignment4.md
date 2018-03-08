@@ -45,23 +45,7 @@ The key macro-level dynamics of interest are as follows
 ****
 &nbsp; 
 ### 1) Environment
-The environment in this model is the recruiting landscape. The environment will keep track of interactions and the resultant outcomes. Here are the environmental variables being tracked
-
-
-_Description of the environment in your model. Things to specify *if they apply*:_
-
-* _Boundary conditions (e.g. wrapping, infinite, etc.)_
-* _Dimensionality (e.g. 1D, 2D, etc.)_
-* _List of environment-owned variables (e.g. resources, states, roughness)_
-* _List of environment-owned methods/procedures (e.g. resource production, state change, etc.)_
-
-
-```python
-# Include first pass of the code you are thinking of using to construct your environment
-# This may be a set of "patches-own" variables and a command in the "setup" procedure, a list, an array, or Class constructor
-# Feel free to include any patch methods/procedures you have. Filling in with pseudocode is ok! 
-# NOTE: If using Netlogo, remove "python" from the markdown at the top of this section to get a generic code block
-```
+I'm not quite sure what the environment is in this model. Because the model isn't spatially visualized, I'm having trouble thinking through how to do so. If I was doing discrete event simulation in operations research, I would create display counters for the different companies, but having 24,500 of them is overkill. One possibility might be to have all of the students start in one location, then move to a different location when they receive an offer. Another option is to represent the universities as locations that have students, and companies would visit those locations.
 
 &nbsp; 
 
@@ -82,7 +66,7 @@ Students will have a set of equally weighted static preferences stored in a list
 
 In addition, students will have a ranked order of desired companies based on who they interact with. This order will be based on how well the company meets their preferences.
 
-The student agent procedures are as follows (in pseudocode):
+The student agent procedures are as follows:
 
 ```python
 def create_students(number_students):
@@ -91,14 +75,14 @@ def create_students(number_students):
         s_id = agent
         students_ids.append(s_id)
         
-        s_gpa = rand_gpa()                 # calls random GPA function
-        students_gpas.append(s_gpa)        # adds agent's GPA to list of all GPAs
+        s_gpa = rand_gpa()                       # calls random GPA function
+        students_gpas.append(s_gpa)              # adds agent's GPA to list of all GPAs
         
-        s_urank = university_rank()        # calls university ranking assignment function
-        students_uranks.append(s_urank)    # adds agent's university rank to the list of rankings
+        s_urank = university_rank()              # calls university ranking assignment function
+        students_uranks.append(s_urank)          # adds agent's university rank to the list of rankings
         
-        s_exp = level_experience()         # calls level of experience function
-        students_exp.append(s_gpa)         # adds agent's level of experience to list
+        s_exp = level_experience()               # calls level of experience function
+        students_exp.append(s_gpa)               # adds agent's level of experience to list
         
         salary_pref = salary_preference()        # calls salary preference function
         students_salary.append(salary_pref)      # adds agent's salary preference to list
@@ -108,6 +92,9 @@ def create_students(number_students):
         
         region_pref = region_preference()        # calls region preference function
         students_region.append(region_pref)      # adds agent's region preference to list
+        
+        industry_pref = industry_preference()    # calls region preference function
+        students_industry.append(industry_pref)  # adds agent's region preference to list
         
      s_dict = {"Student ID": students_ids, "GPA": students_gpa, "Level Experience": students_gpas, "Salary Preference": students_salary, "Bonus Preferred Amount": students_bonus, "Regional Preference": students_region}
      s_matrix = pd.DataFrame(s_dict)
@@ -165,7 +152,7 @@ In addition, companies will have a recruiting strategy based on the following cr
 * Bonus offered
 * Minimum previous experience accepted
  
-The company agent procedures are as follows (in pseudocode):
+The company agent procedures are as follows:
 
 ```python 
 def create_companies(number_companies):
@@ -197,9 +184,8 @@ def create_companies(number_companies):
         
         co_bonus = maximum_bonus()               # calls maximum bonus function
         max_bonus.append(co_bonus)               # adds company's max bonus to list
-        
-        
-     co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries, "Desired GPA": co_dgpa, "Minimum GPA": min_gpa, "Maximum Salary": max_salary, "Maximum Bonus": max_bonus}
+         
+    co_dict = {"Company ID": co_ids, "Region": co_regions, "Industry": co_industries, "Desired GPA": co_dgpa, "Minimum GPA": min_gpa, "Minimum University Rank": min_rank, "Minimum Experience Required": co_min_exp, "Maximum Salary": max_salary, "Maximum Bonus": max_bonus}
      c_matrix = pd.DataFrame(co_dict)
 
 def industry():
@@ -211,7 +197,7 @@ def industry():
 
 def region_location():
     """This procedure assigns each company to a randomly selected region"""
-    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast""
+    """1 - Southwest, 2 - Northwest, 3 - Midwest, 4, Southeast, 5 - Northeast"""
     rloc = numpy.random.choice(numpy.arange(1,5), p = [0.40, 0.25, 0.10, 0.10, 0.15])
     return rloc
     
@@ -223,7 +209,7 @@ def initial_openings():
 def min_gpa():
     """This procedure assigns each company a minimum gpa requirement"""
     wgpa = numpy.random.choice(numpy.arange(1,5), p = [0.20, 0.20, 0.20, 0.20, 0.20)
-    """1 - No requirement, 2 - 2.0 GPA, 3 - 2.5 GPA, 4 - 3.0 GPA, 5 - 3.5
+    """1 - No requirement, 2 - 2.0 GPA, 3 - 2.5 GPA, 4 - 3.0 GPA, 5 - 3.5 GPA"""
     return wgpa
     
 def min_rank():
@@ -253,7 +239,7 @@ def maximum_bonus():
  
 **_Interaction Topology_**
 
-The interaction topology can be thought of as a tri-partite network. Students and companies may interact with each other, but only if the company selects the university to visit. Students will not interact with other students, and companies will not interact with other companies.
+The interaction topology can be thought of as a tri-partite network. Students and companies may interact with each other, but only if the company selects the university to visit. Students will not interact with other students, and companies will not interact with other companies. The university ranking serves as the university ID. In the future, specific universities can be listed by name.
  
 **_Action Sequence_**
 Cycle 1
@@ -273,12 +259,21 @@ Cycle 2
 5. Step 5 - Companies offer jobs to students based on available openings
 6. Step 6 - Students evaluate job offers and rank them based on preferences
 7. Step 7 - Students accept/decline job offers and inform companies of decision
+8. Step 8 - Model stops, and parameters are assessed
+
+I'm still working out the code for the interaction sequence. The biggest question is how to handle the interaction calculations. I envision creating a 2D array that stores student's desirability for each company interacted with, based on region and industry preference. A similar array would be created for each company's desirability of each student interacted with. There would be a sorting procedure (step 2 for students, step 4 for companies)
+
+I'm also putting thought into the predetermined recruiting strategies. I'm thinking that one could be for companies to only target universities in their region. Another might be only target top 10/25/50/100 schools.
+
+The acceptance decision procedure would identify the company highest on their desired list, check to see if there was an offer, check to make sure the job meets the salary and bonus requirements, and accepts the job. Otherwise, the student would move on to the next company on the list.
+
+I also have to figure out how to deal with the student that receives an offer from a company and turns it down. Are they eligible to receive another offer? My approach will probably to make them ineligible.
 
 &nbsp; 
 ### 4) Model Parameters and Initialization
 
 
-The model will be initialized by creating 24,500 students (the number of comp sci/computer engineering graduates in 2016) and 1,000 companies. It will create global parameters to track beginning and ending number of job openings, along with number of student-company interactions. A list to track whether students have accepted job offers will be initialized to False
+The model will be initialized by creating 24,500 students (the number of comp sci/computer engineering graduates in 2016) and 1,000 companies. It will create global parameters to track beginning and ending number of job openings, along with number of student-company interactions. A list to track whether students have accepted job offers will be initialized to False.
 
 
 The initialization code is as follows
@@ -289,17 +284,13 @@ def init():
     
     accepted_offer = [False for x in number_students]
     cycle = 1
-    time = 2
+    time = 0
     number_students = 24,500
     number_companies = 1000
-
-
+    
+    create_companies(number_companies)
+    create_students(number_students)
 ```
-_Describe and list any global parameters you will be applying in your model._
-
-_Describe how your model will be initialized_
-
-_Provide a high level, step-by-step description of your schedule during each "tick" of the model_
 
 &nbsp; 
 
@@ -311,11 +302,8 @@ The quantitative measures being tracked are as follows:
 4. Number of unfilled job openings
 5. Number of students without jobs
 
-_What quantitative metrics and/or qualitative features will you use to assess your model outcomes?_
-
 &nbsp; 
 
 ### 6) Parameter Sweep
 Some of the paratemers I am interested in sweeping is:
-* Number of companies - between 10,000 and 100,000
-_What parameters are you most interested in sweeping through? What value ranges do you expect to look at for your analysis?_
+* Number of companies - between 1,000 and 10,000
