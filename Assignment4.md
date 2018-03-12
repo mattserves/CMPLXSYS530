@@ -49,6 +49,11 @@ I'm not quite sure what the environment is in this model. Because the model isn'
 
 &nbsp; 
 
+__*LS Comments:*__
+
+*Not all ABMs will have an environmental component. If you felt like incoporating an environment, one natural way would be to use it to capture aspects of interaction probabilities (e.g. job seekers and/or companies move around a space either randomly or according to some meaningful constraint, perhaps representing geographic distance). But you may prefer to just get at this using probabilistic functions over network interaction structures, which totally works as well.*
+
+
 ### 2) Agents
  
 The first type of agents are the students. Students will have the following attributes:
@@ -125,6 +130,13 @@ def bonus_preference():
     """This procedure assigns the student a bonus preference from $0 to $50,000"""
     bpref = random.randint(0, 50000)
     return bpref
+
+### LS COMMENTS ### 
+# For both salary and bonus, you'll probably want to make sure that these values get treated as "minimums" as opposed to an exact 
+# preference as I assume you wouldn't want an agent turning down a $100k job because their preference was $60k. You may also want to 
+# consider rounding this value to the thousands place or something similar as I assume you would rather your agents not turn down a 
+# $60,001 job because their minimum was $60k. At some point, you may also want to introduce a correlation between region
+# pref/experience/and/or GPA
 
 def region_preference():
     """This procedure assigns the student a regional preference from 1-6"""
@@ -231,6 +243,10 @@ def maximum_bonus():
     """This procedure assigns each company a maximum salary offered from $0 to $50,000"""
     maxbonus = random.randint(0, 50000)
     return maxbonus
+
+### LS COMMENTS
+# Setup looks good and readily expandable to future variants.
+
 ```
 
 &nbsp; 
@@ -240,6 +256,9 @@ def maximum_bonus():
 **_Interaction Topology_**
 
 The interaction topology can be thought of as a tri-partite network. Students and companies may interact with each other, but only if the company selects the university to visit. Students will not interact with other students, and companies will not interact with other companies. The university ranking serves as the university ID. In the future, specific universities can be listed by name.
+ 
+__*LS COMMENTS:*__
+*You might think of universities as brokering the relationship between students and companies. Your specification of this network will end up being very important to your outcomes, so you'll definitely want to think of this as a sort of parameter that you'll need to explore. For instance, even the number of universities a company has ties to (and vice-versa) and the distribution of the number of students across universities will likely have an impact on your outcomes of interest all on their own.*
  
 **_Action Sequence_**
 Cycle 1
@@ -263,7 +282,13 @@ Cycle 2
 
 I'm still working out the code for the interaction sequence. The biggest question is how to handle the interaction calculations. I envision creating a 2D array that stores student's desirability for each company interacted with, based on region and industry preference. A similar array would be created for each company's desirability of each student interacted with. There would be a sorting procedure (step 2 for students, step 4 for companies)
 
+__*LS COMMENTS:*__
+*Good start here. As with any matching process, you'll need to think very carefully about who moves when, as that is going to matter a lot to the ability of the system to sort itself out. Along these lines, I might suggest also think about asynchronous vs. sychronous updating. One other question I had concerns the number of openings companies will have - is it a set number of hires per university OR a number that they will have available for the whole system? If it is across the whole system, then the order of which university sorts itself first is also going to matter.*
+
 I'm also putting thought into the predetermined recruiting strategies. I'm thinking that one could be for companies to only target universities in their region. Another might be only target top 10/25/50/100 schools.
+
+__*LS COMMENTS:*__
+*See earlier comment on network structure, as this decision will likely end up mattering a lot! I would suggest also doing a baseline model wherein companies just randomly pick universities to go to*
 
 The acceptance decision procedure would identify the company highest on their desired list, check to see if there was an offer, check to make sure the job meets the salary and bonus requirements, and accepts the job. Otherwise, the student would move on to the next company on the list.
 
